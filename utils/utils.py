@@ -32,3 +32,36 @@ def compute_approx_kl(
 
     log_ratio = log_ratio.clamp(min=-10, max=10)
     return log_ratio
+
+
+class MultiHeadAttention(nn.Module):
+    def __init__(self, d_model: int = 512, nums_head: int = 8, dropout: float = 0.0):
+        super().__init__()
+        assert d_model % nums_head == 0
+        self.d_model = d_model
+        self.nums_head = nums_head
+        self.d_head = d_model // nums_head
+        
+        self.qkv = nn.Linear(d_model, 3 * d_model)
+        self.out_proj = nn.Linear(d_model, d_model)
+        self.dropout = nn.Dropout(dropout)
+    
+    def forward(self, x: torch.Tensor, mask: torch.Tensor | None = None):
+        B, T, C = x.shape
+        
+        qkv = self.qkv(x)                                      # (B, T, 3*C)
+        qkv = qkv.view(B, T, 3, self.nums_head, self.d_head)   # (B, T, 3, H, Dh)
+        qkv = qkv.permute(2, 0, 3, 1, 4)                       # (3, B, H, T, Dh)
+        q, k, v = qkv[0], qkv[1], qkv[2]                       # (B, H, T, Dh)
+        
+        attn_scores = q @ k.transpose(-2, -1) / math.sqrt(self.d_head)  # (B, H, T, T)
+        if mask is not None:
+            attn_scores = attn_scores.masked_fill(mask == 0, float('-inf'))
+        
+        attn = attn_scores.softmax(dim=-1)                     # (B, H, T, T)
+        attn = self.dropout(attn)
+        out = attn @ v                                         # (B, H, T, Dh)
+        
+        out = out.transpose(1, 2).contiguous().view(B, T, C)   # (B, T, C)
+        out = self.out_proj(out)
+        return out
