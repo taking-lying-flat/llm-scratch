@@ -1,8 +1,19 @@
 #!/bin/bash
 
+# Backend for attention computation
+# Available options:
+# - "TORCH_SDPA": use torch.nn.MultiheadAttention
+# - "FLASH_ATTN": use FlashAttention
+# - "XFORMERS": use XFormers
+# - "ROCM_FLASH": use ROCmFlashAttention
+# - "FLASHINFER": use flashinfer
+# - "FLASHMLA": use FlashMLA
+
 # ✅ 作用：所有使用 OpenMP 的 CPU 算子（MKL / OpenBLAS / oneDNN / 部分 C++ 扩展）最多只开 1 个线程
 # 🎯 常见目的：防止多进程场景 CPU 线程爆炸（每个 worker 开几十线程 → 直接把 CPU 打满）
 export OMP_NUM_THREADS=1
+export VLLM_ATTENTION_BACKEND=FLASH_ATTN
+export VLLM_USE_FLASHINFER_SAMPLER=0  # 采样用不用 FlashInfer
 
 
 MODEL_PATH="Qwen2.5-VL-72B-Instruct"
