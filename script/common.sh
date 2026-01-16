@@ -31,7 +31,7 @@ docker tag <LOCAL_IMAGE_NAME>:<TAG> <REGISTRY>/<NAMESPACE>/<IMAGE_NAME>:<TAG>
 docker push <REGISTRY>/<NAMESPACE>/<IMAGE_NAME>:<TAG>
 # 从远端仓库拉取镜像
 docker pull <REGISTRY>/<NAMESPACE>/<IMAGE_NAME>:<TAG>
-# # HPC/多卡训练容器启动脚本（GPU + RDMA + Host 网络/IPC + 数据挂载 + 北京时间）
+# HPC/多卡训练容器启动脚本（GPU + RDMA + Host 网络/IPC + 数据挂载 + 北京时间）
 docker run -it --name <CONTAINER_NAME> --gpus all --ipc=host --net=host \
   -v /data/ossfs2-bucket:/data -v /tmp:/tmp \
   -v /usr/share/zoneinfo/Asia/Shanghai:/etc/localtime:ro \
