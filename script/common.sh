@@ -27,3 +27,6 @@ pip install "qwen_vl_utils>=0.0.14" "decord" -U -i https://mirrors.aliyun.com/py
 pip cache purge
 conda clean -a -y
 rm -rf ~/.cache/pip ~/.cache/torch_extensions
+
+/root/miniconda3/bin/conda init bash
+source ~/.bashrc
