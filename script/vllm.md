@@ -15,6 +15,8 @@ export VLLM_USE_FLASHINFER_SAMPLER=0
 export OMP_NUM_THREADS=1
 ```
 
+## 常用参数清单
+
 ```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
 nohup python -m vllm.entrypoints.openai.api_server \
