@@ -23,7 +23,7 @@ pip install flash-attn --no-build-isolation
 ```
 
 ### 源码编译安装
-*适用于预编译包不兼容或需要特定版本的情况。*
+*适用于预编译包不兼容或需要特定版本的情况*
 ```bash
 git clone --recursive https://github.com/Dao-AILab/flash-attention.git
 cd flash-attention
@@ -47,7 +47,7 @@ pip install ms-swift -U
 pip install -e .
 
 # 安装 Qwen-VL 等多模态所需依赖
-pip install "qwen_vl_utils>=0.0.14" "decord" -U -i https://mirrors.aliyun.com/pypi/simple/
+pip install "qwen_vl_utils>=0.0.14" "decord" -U -i https://mirrors.aliyun.com/pypi/simple
 ```
 
 ## 4. 维护与初始化
